@@ -1,54 +1,40 @@
 <template>
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    <span class="alert-inner--icon"><i class="fas fa-check"></i></span>
-    <span class="alert-inner--text"><strong>Success!</strong> This is a success alert—check it out!</span>
-    <button type="button" class="undo" aria-label="Undo">Undo</button>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-<div class="alert alert-info alert-dismissible fade show" role="alert">
-    <span class="alert-inner--icon"><i class="fas fa-info"></i></span>
-    <span class="alert-inner--text"><strong>Info!</strong> This is an info alert—check it out!</span>
-    <button type="button" class="undo" aria-label="Undo">Undo</button>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <span class="alert-inner--icon"><i class="fas fa-exclamation"></i></span>
-    <span class="alert-inner--text"><strong>Warning!</strong> This is a warning alert—check it out!</span>
-    <button type="button" class="undo" aria-label="Undo">Undo</button>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <span class="alert-inner--icon"><i class="fas fa-times"></i></span>
-    <span class="alert-inner--text"><strong>Danger</strong> This is an error alert—check it out!</span>
-    <button type="button" class="undo" aria-label="Undo">Undo</button>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+    <el-menu
+        :default-active="activeIndex"
+        class="el-menu-demo"
+        router
+        mode="horizontal"
+        background-color="rgba(22, 22, 23, .8)"
+        text-color="#fff"
+        active-text-color="#67C23A"
+        @select="handleSelect"
+    >
+        <el-menu-item index="/">首页</el-menu-item>
+        <el-menu-item index="/myblog">博客</el-menu-item>
+    </el-menu>
+    <RouterView />
 </template>
 
 <script>
-
+import { reactive, toRefs } from 'vue'
 export default {
   name: 'App',
-  components: {
-  }
+  components: {},
+  setup() {
+    const data = reactive({
+      activeIndex: '/',
+    })
+
+    const gotoUrl = (url) => {
+      this.$router.push(url)
+    }
+    return {
+      ...toRefs(data),
+      gotoUrl,
+    }
+  },
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
