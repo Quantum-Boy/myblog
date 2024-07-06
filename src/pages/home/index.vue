@@ -95,13 +95,12 @@ export default {
 </script>
 <style scoped>
 .card-hover {
-  width: 90%;
-  height: 90%;
-  margin: auto;
+  width: 80%;
+  height: 80%;
+  transform: scale(1);
   transition: all 1s;
 }
 .card-hover:hover {
-  width: 100%;
-  height: 100%;
+  transform: scale(1.2);
 }
 </style>
