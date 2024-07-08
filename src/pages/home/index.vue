@@ -20,7 +20,7 @@ export default {
   components: {
     Waterfall,
     LazyImg,
-  }, 
+  },
   setup() {
     const data = reactive({
       list: [
