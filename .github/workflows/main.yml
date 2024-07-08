@@ -26,5 +26,5 @@ jobs:
         username: ${{secrets.USERNAME}}
         password: ${{secrets.PASSWORD}}
         port: 22
-        source: "/dist"
+        source: "build/"
         target: "/usr/web"
