@@ -1,5 +1,3 @@
-# 一个 workflow，名为 Deploy
-
 name: web
 
 on:
