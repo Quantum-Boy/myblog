@@ -1,53 +1,42 @@
+# 一个 workflow，名为 Deploy
 
-# This is a basic workflow to help you get started with Actions
- 
-name: browser-home-page
- 
-# Controls when the workflow will run
-on:
-  # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-    branches: [ master ]
- 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
- 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+name: Deploy
+
+on: # 此 CI/CD 触发时的事件
+push: # 在代码提交时自动触发
+branches: - develop # 触发的分支
+
+# 一个 CI/CD 的工作流有许多 jobs 组成，比如最典型的 job 是 lint，test，build。
+
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
- 
-    # Steps represent a sequence of tasks that will be executed as part of the 
- 
-#关键配置
-job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - name: install node.js
-        uses: actions/setup-node@v3.0.0 
-        with: 
-              node-version: "14.X"
-      - name: install deps
-        run: npm install
-      - name: build app
-        run: npm run build
-      - name: copy file via ssh key
+build-and-deploy: # 构建 job
+runs-on: ubuntu-latest # 跑 workflow 的服务器系统
+
+    steps: # job的一系列动作
+      # 切换分支获取源码
+      - name: Checkout # step的名称，将会在 github action 的控制台中显示
+        uses: actions/checkout@v3 # 选择一个action，可以理解为若干 steps.run，有利于代码复用
+
+      # 安装使用 node:14.18.0
+      - name: Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14.18.0 # node版本
+
+      # 运行命令，npm install
+      - name: Install
+        run: node -v && yarn
+
+      # 运行命令，npm run build
+      - name: Build
+        run: yarn build
+
+      # 部署到腾讯云服务器
+      - name: Upload files to server
         uses: appleboy/scp-action@master
         with:
-	#需要部署的文件地址
-            source: 'dist/*'
-    # SSH address  服务器地址
-            host: ${{ secrets.REMOTE_HOST }}
-    # Remote dir path  服务器下部署文件存放路径
-            target: ${{ secrets.REMOTE_PATH }}
-    # SSH Port  服务器端口
-            port: 22
-    # SSH User name   用户名
-            username: ${{ secrets.USER_NAME }}
-    # SSH User password  用户密码
-          #  password: ${{ secrets.PASSWORD }}
-    # key  密匙
-            key: ${{ secrets.SSH_KEY }}
+          host: ${{ secrets.SERVER_SSH_HOST }} # 服务器域名
+          username: ${{ secrets.SERVER_SSH_USER }} # 腾讯云默认用户名为root
+          key: ${{ secrets.SERVER_SSH_KEY }} # 本地.ssh文件下的私钥id_rsa，存在secrets中
+          source: './dist' # 源目录，相对于$GITHUB_WORKSPACE根目录的路径
+          target: ${{ secrets.SERVER_SSH_TARGET }} # 目标目录
