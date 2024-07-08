@@ -1,5 +1,4 @@
 name: web
-
 on:
   push:
     branches: [master]
