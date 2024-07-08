@@ -34,3 +34,4 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }} # 本地.ssh文件下的私钥id_rsa，存在secrets中
           source: './dist' # 源目录，相对于$GITHUB_WORKSPACE根目录的路径
           target: ${{ secrets.SERVER_SSH_TARGET }} # 目标目录
+          
